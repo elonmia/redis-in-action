@@ -47,19 +47,21 @@ public class JedisPoolManager {
 			if(StringUtils.isEmpty(server)){
 				throw new IllegalArgumentException("JedisPool redis.server is empty!");
 			}
-			
-			String[] host_arr = server.split(",");
-			if(host_arr.length>1){
+
+			String[] server_arr = server.split(",");
+			if(server_arr.length>1){
 				throw new IllegalArgumentException("JedisPool redis.server length > 1");
 			}
-			
-			String[] arr = host_arr[0].split(":");
-			
-			// 根据配置实例化jedis池
-			System.out.println("***********init JedisPool***********");
-			System.out.println("host->"+arr[0]+",port->"+arr[1]);
-			
-			pool = new JedisPool(config, arr[0], Integer.parseInt(arr[1]));
+
+			String[] arr = server_arr[0].split(":");
+			String host = arr[0];
+			int port = Integer.parseInt(arr[1]);
+			int timeout = Integer.parseInt(props.getProperty("redis.timeout"));
+			String password = props.getProperty("redis.password");
+
+			System.out.println("host->"+host+",port->"+port+",timeout="+timeout+",password:"+password);
+
+			pool = new JedisPool(config, host, port, timeout, password);
 			
 		} catch (IOException e) {
 			throw new IllegalArgumentException("init JedisPool error", e);
