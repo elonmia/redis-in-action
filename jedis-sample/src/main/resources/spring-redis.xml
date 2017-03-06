@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd" default-lazy-init="false">
+
+    <!-- redis -->
+    <bean id="redisClient" class="com.bytebeats.redis.jedis.sample.spring.RedisClient" destroy-method="destroy">
+        <constructor-arg name="pool">
+            <bean class="com.bytebeats.redis.jedis.sample.spring.RedisClient$RedisClientFacotry">
+                <property name="ip" value="#{redis['redis.ip']}" />
+                <property name="port" value="#{redis['redis.port']}"/>
+                <property name="password" value="#{redis['redis.password']}"/>
+                <property name="timeout" value="#{redis['redis.timeout']}"/>
+                <property name="maxTotal" value="#{redis['redis.pool.maxTotal']}"/>
+                <property name="maxWaitMillis" value="#{redis['redis.pool.maxWaitMillis']}"/>
+                <property name="maxIdle" value="#{redis['redis.pool.maxIdle']}"/>
+                <property name="testOnBorrow" value="#{redis['redis.pool.testOnBorrow']}"/>
+                <property name="testOnReturn" value="#{redis['redis.pool.testOnReturn']}"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+</beans>
